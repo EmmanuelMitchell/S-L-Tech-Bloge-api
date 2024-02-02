@@ -22,7 +22,7 @@ const creatUser = async (req, res, next) => {
       email,
       password: hashPassword,
     });
-    res.status(201).json({ status: "Success", data: user });
+    return res.status(201).json({ status: "Success", data: user });
   } catch (error) {
     next(new Error(error.message));
     // return console.log(error);
@@ -46,7 +46,7 @@ const loginUser = async (req, res) => {
         .status(404)
         .json({ status: "failed", msg: "wrong Credentail" });
     }
-    res.status(200).json({
+    return res.status(200).json({
       status: "Success",
       data: {
         firstName: userFound.firstName,
@@ -68,7 +68,7 @@ const getAllUsers = async (req, res) => {
     if (!users) {
       return res.status(404).json({ status: "failed", msg: "User Note found" });
     }
-    res
+    return res
       .status(200)
       .json({ status: "success", totalUsers: users.length, data: users });
   } catch (error) {
@@ -85,7 +85,7 @@ const userProfile = async (req, res) => {
   // console.log(token);
   try {
     const user = await User.findById(req.userAuth);
-    res.status(200).json({ status: "Success", data: user });
+    return res.status(200).json({ status: "Success", data: user });
   } catch (error) {
     return console.log(error);
   }
@@ -93,7 +93,7 @@ const userProfile = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    res.status(200).json({ status: "Success", data: "Update User" });
+    return res.status(200).json({ status: "Success", data: "Update User" });
   } catch (error) {
     return console.log(error);
   }
@@ -101,7 +101,7 @@ const updateUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    res.status(200).json({ status: "Success", data: "Get Single user" });
+    return res.status(200).json({ status: "Success", data: "Get Single user" });
   } catch (error) {
     return console.log(error);
   }
@@ -170,12 +170,10 @@ const unFollowingUser = async (req, res, next) => {
           // Save userToBeUnFollow
         );
         await userWhoUnFollow.save();
-        res
-          .status(200)
-          .json({
-            status: "Success",
-            data: "You have Success unFollow this  user",
-          });
+        res.status(200).json({
+          status: "Success",
+          data: "You have Success unFollow this  user",
+        });
       }
     }
   } catch (error) {
